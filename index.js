@@ -11,13 +11,20 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 
 const trySchema = new mongoose.Schema({
-  name: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  priority: {
+    type: String,
+    enum: ["low", "high", "urgent"],
+    default: "low",
+  },
 });
 
-const item = mongoose.model("task", trySchema);
+const Task = mongoose.model("task", trySchema);
 app.get("/", function (req, res) {
-  item
-    .find({})
+  Task.find({})
     .then((foundItems) => {
       res.render("list", { ejes: foundItems });
     })
@@ -26,25 +33,32 @@ app.get("/", function (req, res) {
     });
 });
 app.post("/", function (req, res) {
-  const itemName = req.body.ele1;
-  const todo5 = new item({
-    name: itemName,
-  });
-  todo5.save();
-  res.redirect("/");
+  const { ele1: title, priority } = req.body;
+  if (title.trim() !== "") {
+    const newTask = new Task({ title, priority });
+    newTask.save().then(() => res.redirect("/"));
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.post("/edit", function (req, res) {
+  const { id, title, priority } = req.body;
+  Task.findByIdAndUpdate(id, { title, priority })
+    .then(() => res.redirect("/"))
+    .catch((err) => console.log(err));
 });
 
 app.post("/delete", function (req, res) {
   const checked = req.body.checkbox1;
 
-  item
-    .findByIdAndDelete(checked)
+  Task.findByIdAndDelete(checked)
     .then(() => {
-      console.log("Successfully deleted item");
+      console.log("Successfully deleted task");
       res.redirect("/");
     })
     .catch(() => {
-      console.log("Error deleting item");
+      console.log("Error deleting task");
     });
 });
 

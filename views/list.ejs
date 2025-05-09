@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo list</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -13,20 +14,70 @@
         <h1>Todo List </h1>
     </div>
     <div class="box">
-        <% ejes.forEach(function(item){ %>
-            <form action="/delete" method="post">
-                <div class="item">
-                    <input type="checkbox" name="checkbox1" value="<%=item._id %>" onchange="this.form.submit()">
+        <% ejes.forEach(function(item) { %>
+            <div class="item" style="display: flex; justify-content: space-between;">
+                <div>
                     <p>
-                        <%= item.name %> <!--variable-->
+                        <%= item.title %> - <strong>
+                                <%= item.priority %>
+                            </strong>
                     </p>
                 </div>
-            </form>
+                <div style="display: flex;">
+                    <form action="/delete" method="POST" style="margin-top: 0;">
+                        <input type="hidden" name="checkbox1" value="<%= item._id %>">
+                        <button type="submit" style="background:none; border:none; cursor:pointer;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                    <button onclick="openEditForm('<%= item._id %>', '<%= item.title %>', '<%= item.priority %>')"
+                        style="background:none; border:none; cursor:pointer;">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                </div>
+            </div>
             <% }) %>
+
                 <form action="/" method="post">
-                    <input type="text" name="ele1" placeholder="Enter the task">
+                    <input type="text" name="ele1" placeholder="Enter the task" required>
+                    <select name="priority">
+                        <option value="low">Low</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
                     <button type="submit">+</button>
                 </form>
+
+                <div id="editModal" style="display:none;">
+                    <form action="/edit" method="POST">
+                        <div>
+                            <div style="display: flex;">
+                                <input type="hidden" id="edit-id" name="id">
+                                <input type="text" id="edit-title" name="title" required>
+                                <select name="priority" id="edit-priority">
+                                    <option value="low">Low</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="submit">Update</button>
+                                <button type="button"
+                                    onclick="document.getElementById('editModal').style.display='none'">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <script>
+                    function openEditForm(id, title, priority) {
+                        document.getElementById('edit-id').value = id;
+                        document.getElementById('edit-title').value = title;
+                        document.getElementById('edit-priority').value = priority;
+                        document.getElementById('editModal').style.display = 'block';
+                    }
+                </script>
+
     </div>
 </body>
 
