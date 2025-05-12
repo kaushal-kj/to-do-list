@@ -1,9 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
 require("dotenv").config();
 var app = express();
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.use(express.static("public"));
 
 const mongoose = require("mongoose");
@@ -42,17 +44,18 @@ app.post("/", function (req, res) {
   }
 });
 
-app.post("/edit", function (req, res) {
+// PUT - Update task
+app.put("/edit", function (req, res) {
   const { id, title, priority } = req.body;
   Task.findByIdAndUpdate(id, { title, priority })
     .then(() => res.redirect("/"))
     .catch((err) => console.log(err));
 });
 
-app.post("/delete", function (req, res) {
-  const checked = req.body.checkbox1;
-
-  Task.findByIdAndDelete(checked)
+// DELETE - Delete task
+app.delete("/delete", function (req, res) {
+  const id = req.body.checkbox1;
+  Task.findByIdAndDelete(id)
     .then(() => {
       console.log("Successfully deleted task");
       res.redirect("/");

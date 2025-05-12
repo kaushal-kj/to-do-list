@@ -24,7 +24,7 @@
                     </p>
                 </div>
                 <div style="display: flex;">
-                    <form action="/delete" method="POST" style="margin-top: 0;">
+                    <form action="/delete?_method=DELETE" method="POST" style="margin-top: 0;">
                         <input type="hidden" name="checkbox1" value="<%= item._id %>">
                         <button type="submit" style="background:none; border:none; cursor:pointer;">
                             <i class="fas fa-trash"></i>
@@ -49,7 +49,7 @@
                 </form>
 
                 <div id="editModal" style="display:none;">
-                    <form action="/edit" method="POST">
+                    <form action="/edit?_method=PUT" method="POST">
                         <div>
                             <div style="display: flex;">
                                 <input type="hidden" id="edit-id" name="id">
