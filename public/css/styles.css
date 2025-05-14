@@ -9,27 +9,29 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  position: relative;
 }
 
-/* Container for the todo list */
+/* Container */
 .box {
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 20px;
-  width: 350px;
+  max-width: 400px;
+  width: 100%;
   text-align: center;
 }
 
-/* Title styling */
+/* Title */
 h1 {
   font-size: 24px;
   color: #4b67db;
   margin-bottom: 20px;
 }
 
-/* Task styling */
+/* Tasks */
 p {
   font-size: 16px;
   color: #333;
@@ -39,30 +41,35 @@ p {
   margin: 3px 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
+
 .item {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Input and button styling */
+/* Form */
 form {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 10px;
 }
 
-form input[type="text"] {
-  flex: 1;
+form input[type="text"],
+form select {
+  flex: 1 1 auto;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 25px;
   font-size: 14px;
-  margin-right: 10px;
   outline: none;
+  min-width: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-form input[type="text"]:focus {
+form input[type="text"]:focus,
+form select:focus {
   border-color: #4b67db;
   box-shadow: 0 4px 8px rgba(75, 103, 219, 0.2);
 }
@@ -76,13 +83,14 @@ form button {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  flex-shrink: 0;
 }
 
 form button:hover {
   background-color: #7b56c9;
 }
 
-/* Additional background styling (optional decoration) */
+/* Background layer */
 body:before {
   content: "";
   position: absolute;
@@ -92,9 +100,7 @@ body:before {
   z-index: -1;
 }
 
-/* edit modal css */
-
-/* Modal overlay */
+/* Edit Modal */
 #editModal {
   position: fixed;
   top: 50%;
@@ -106,33 +112,30 @@ body:before {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   z-index: 10;
   display: none;
+  max-width: 90%;
   width: 300px;
 }
 
-/* Modal form fields */
-#editModal input[type="text"] {
+#editModal input[type="text"],
+#editModal select {
   width: 100%;
   padding: 10px;
-  margin: 8px 5px;
+  margin: 8px 0;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   font-size: 14px;
 }
 
-#editModal select {
-  width: 30%;
-  padding: 10px;
-  margin: 8px 5px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  font-size: 14px;
+#editModal .modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  gap: 10px;
 }
 
-/* Modal buttons */
 #editModal button {
-  margin-top: 10px;
+  flex: 1;
   padding: 8px 12px;
   border: none;
   border-radius: 8px;
@@ -140,14 +143,13 @@ body:before {
   color: white;
   cursor: pointer;
   font-size: 14px;
-  margin-right: 10px;
 }
 
 #editModal button:hover {
   background-color: #7b56c9;
 }
 
-/* Icon buttons */
+/* Icons */
 .item form button,
 .item button {
   background: none;
@@ -167,13 +169,31 @@ body:before {
   color: #7b56c9;
 }
 
-/* Priority dropdown in add task form */
-form select {
-  padding: 10px;
-  border-radius: 25px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
-  outline: none;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Responsive  */
+@media (max-width: 480px) {
+  .box {
+    max-width: 70%;
+    padding: 15px;
+  }
+
+  form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  form input[type="text"] {
+    width: 92%;
+  }
+  form select {
+    width: 100%;
+  }
+
+  form button {
+    align-self: center;
+  }
+
+  .item {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
